@@ -14,7 +14,7 @@ type ContentStoredWithMetadata @entity(immutable: true) {
   tokenId: BigInt! # uint256
   encryptedCID: Bytes! # bytes
   isCIDEncrypted: Boolean! # bool
-  metadata: String! # string
+  metadata: Bytes! # bytes
   fields: [ContentField!] @derivedFrom(field: "content") # Dynamic metadata fields
   isMetadataSigned: Boolean! # bool
   blockNumber: BigInt!

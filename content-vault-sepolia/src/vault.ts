@@ -1,4 +1,5 @@
 import {
+  Bytes,
   JSONValue,
   JSONValueKind,
   TypedMap,
@@ -21,6 +22,7 @@ import {
   VaultTransferred as VaultTransferredEvent,
 } from "../generated/Vault/Vault";
 import {
+  AccessRegistry,
   ApprovalForAll,
   ContentField,
   ContentStoredWithMetadata,
@@ -231,6 +233,21 @@ export function handleURI(event: URIEvent): void {
   entity.save();
 }
 
+export function handleVaultCreated(event: VaultCreatedEvent): void {
+  let entity = new VaultCreated(
+    Bytes.fromUTF8(event.params.tokenId.toHexString())
+  );
+  entity.tokenId = event.params.tokenId;
+  entity.owner = event.params.owner;
+  entity.schemaCID = event.params.schemaCID;
+
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+
+  entity.save();
+}
+
 export function handleVaultAccessGranted(event: VaultAccessGrantedEvent): void {
   let entity = new VaultAccessGranted(
     event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -244,6 +261,26 @@ export function handleVaultAccessGranted(event: VaultAccessGrantedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  // Find the VaultCreated entity with the same tokenId
+  let vaultCreatedEntity = VaultCreated.load(
+    Bytes.fromUTF8(event.params.tokenId.toHexString())
+  );
+
+  // If we found a VaultCreated entity, create the AccessRegistry
+  if (vaultCreatedEntity != null) {
+    let accessRegistryEntity = new AccessRegistry(
+      entity.id.toString() + "-" + entity.tokenId.toString()
+    );
+
+    accessRegistryEntity.vaultCreated = vaultCreatedEntity.id;
+    accessRegistryEntity.vaultAccessGranted = entity.id;
+    accessRegistryEntity.save();
+  } else {
+    log.warning("Could not find VaultCreated entity for tokenId: {}", [
+      entity.tokenId.toString(),
+    ]);
+  }
 }
 
 export function handleVaultAccessRevoked(event: VaultAccessRevokedEvent): void {
@@ -252,21 +289,6 @@ export function handleVaultAccessRevoked(event: VaultAccessRevokedEvent): void {
   );
   entity.to = event.params.to;
   entity.tokenId = event.params.tokenId;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
-
-  entity.save();
-}
-
-export function handleVaultCreated(event: VaultCreatedEvent): void {
-  let entity = new VaultCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
-  entity.tokenId = event.params.tokenId;
-  entity.owner = event.params.owner;
-  entity.schemaCID = event.params.schemaCID;
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;

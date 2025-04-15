@@ -106,7 +106,8 @@ type VaultAccessGranted @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-  userData: UserData! @derivedFrom(field: "vaultAccessesGranted")
+  accessRegistry: AccessRegistry! @derivedFrom(field: "vaultAccessGranted")
+  userData: UserData!
 }
 
 type VaultAccessRevoked @entity(immutable: true) {
@@ -126,14 +127,8 @@ type VaultCreated @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-  accessRegistries: [AccessRegistry!] @derivedFrom(field: "vaultCreated")
-  userData: UserData! @derivedFrom(field: "vaultsCreated")
-}
-
-type AccessRegistry @entity(immutable: true) {
-  id: ID! # Unique (vaultAccessGrantedId + "-" + tokenId)
-  vaultCreated: VaultCreated!
-  vaultAccessGranted: VaultAccessGranted!
+  accessRegistries: [AccessRegistry!]! @derivedFrom(field: "vaultCreated")
+  userData: UserData!
 }
 
 type VaultTransferred @entity(immutable: true) {
@@ -146,9 +141,15 @@ type VaultTransferred @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+type AccessRegistry @entity(immutable: true) {
+  id: ID!
+  vaultAccessGranted: VaultAccessGranted!
+  vaultCreated: VaultCreated!
+}
+
 type UserData @entity(immutable: true) {
   id: Bytes!
-  user: Bytes! # address
+  user: Bytes!
   vaultAccessesGranted: [VaultAccessGranted!] @derivedFrom(field: "userData")
   vaultsCreated: [VaultCreated!] @derivedFrom(field: "userData")
 }

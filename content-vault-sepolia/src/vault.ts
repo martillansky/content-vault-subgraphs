@@ -33,6 +33,7 @@ import {
   TransferBatch,
   TransferSingle,
   URI,
+  UserData,
   VaultAccessGranted,
   VaultAccessRevoked,
   VaultCreated,
@@ -245,6 +246,16 @@ export function handleVaultCreated(event: VaultCreatedEvent): void {
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
 
+  // Create UserData entity if it doesn't exist
+  let userData = UserData.load(Bytes.fromUTF8(entity.owner.toHexString()));
+  if (!userData) {
+    userData = new UserData(Bytes.fromUTF8(entity.owner.toHexString()));
+    userData.user = entity.owner;
+    userData.save();
+  }
+
+  entity.userData = userData.id;
+
   entity.save();
 }
 
@@ -260,6 +271,15 @@ export function handleVaultAccessGranted(event: VaultAccessGrantedEvent): void {
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
 
+  // Create UserData entity if it doesn't exist
+  let userData = UserData.load(Bytes.fromUTF8(entity.to.toHexString()));
+  if (!userData) {
+    userData = new UserData(Bytes.fromUTF8(entity.to.toHexString()));
+    userData.user = entity.to;
+    userData.save();
+  }
+
+  entity.userData = userData.id;
   entity.save();
 
   // Find the VaultCreated entity with the same tokenId
@@ -273,8 +293,8 @@ export function handleVaultAccessGranted(event: VaultAccessGrantedEvent): void {
       entity.id.toString() + "-" + entity.tokenId.toString()
     );
 
-    accessRegistryEntity.vaultCreated = vaultCreatedEntity.id;
     accessRegistryEntity.vaultAccessGranted = entity.id;
+    accessRegistryEntity.vaultCreated = vaultCreatedEntity.id;
     accessRegistryEntity.save();
   } else {
     log.warning("Could not find VaultCreated entity for tokenId: {}", [

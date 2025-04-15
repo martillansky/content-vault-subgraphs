@@ -240,6 +240,8 @@ export function handleVaultCreated(event: VaultCreatedEvent): void {
   );
   entity.tokenId = event.params.tokenId;
   entity.owner = event.params.owner;
+  entity.name = event.params.name;
+  entity.description = event.params.description;
   entity.schemaCID = event.params.schemaCID;
 
   entity.blockNumber = event.block.number;

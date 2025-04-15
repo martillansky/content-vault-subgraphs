@@ -55,7 +55,7 @@ dataSources:
           handler: handleVaultAccessGranted
         - event: VaultAccessRevoked(indexed address,indexed uint256)
           handler: handleVaultAccessRevoked
-        - event: VaultCreated(indexed uint256,indexed address,string)
+        - event: VaultCreated(indexed uint256,indexed address,string,string,string)
           handler: handleVaultCreated
         - event: VaultTransferred(indexed uint256,indexed address,indexed address)
           handler: handleVaultTransferred

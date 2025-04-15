@@ -123,6 +123,8 @@ type VaultCreated @entity(immutable: true) {
   id: Bytes!
   tokenId: BigInt! # uint256
   owner: Bytes! # address
+  name: String! # string
+  description: String! # string
   schemaCID: String! # string
   blockNumber: BigInt!
   blockTimestamp: BigInt!

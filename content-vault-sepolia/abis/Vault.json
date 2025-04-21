@@ -300,9 +300,9 @@
       },
       {
         "indexed": false,
-        "internalType": "bytes",
+        "internalType": "string",
         "name": "metadata",
-        "type": "bytes"
+        "type": "string"
       },
       {
         "indexed": false,
@@ -581,19 +581,6 @@
     ],
     "name": "VaultTransferred",
     "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "DOMAIN_SEPARATOR",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
   },
   {
     "inputs": [],
@@ -1177,9 +1164,9 @@
         "type": "bool"
       },
       {
-        "internalType": "bytes[]",
+        "internalType": "string[]",
         "name": "metadatas",
-        "type": "bytes[]"
+        "type": "string[]"
       }
     ],
     "name": "storeContentBatch",
@@ -1205,9 +1192,9 @@
         "type": "bool"
       },
       {
-        "internalType": "bytes[]",
+        "internalType": "string[]",
         "name": "metadatas",
-        "type": "bytes[]"
+        "type": "string[]"
       },
       {
         "internalType": "uint256",
@@ -1243,9 +1230,9 @@
         "type": "bool"
       },
       {
-        "internalType": "bytes",
+        "internalType": "string",
         "name": "metadata",
-        "type": "bytes"
+        "type": "string"
       }
     ],
     "name": "storeContentWithMetadata",
@@ -1271,9 +1258,9 @@
         "type": "bool"
       },
       {
-        "internalType": "bytes",
+        "internalType": "string",
         "name": "metadata",
-        "type": "bytes"
+        "type": "string"
       },
       {
         "internalType": "uint256",

@@ -1,0 +1,261 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_vault", "type": "address" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  { "inputs": [], "name": "AlreadyHasToken", "type": "error" },
+  { "inputs": [], "name": "CannotRevokeAccessToSelf", "type": "error" },
+  { "inputs": [], "name": "EmptyArray", "type": "error" },
+  { "inputs": [], "name": "InvalidPermission", "type": "error" },
+  { "inputs": [], "name": "InvalidSchemaIndex", "type": "error" },
+  { "inputs": [], "name": "InvalidUpgrade", "type": "error" },
+  { "inputs": [], "name": "MismatchedArrayLengths", "type": "error" },
+  { "inputs": [], "name": "NoAccessToRevoke", "type": "error" },
+  { "inputs": [], "name": "NoWritePermission", "type": "error" },
+  { "inputs": [], "name": "NotMasterCrosschainGranter", "type": "error" },
+  { "inputs": [], "name": "NotProposalVaultManager", "type": "error" },
+  { "inputs": [], "name": "NotVaultOwner", "type": "error" },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "owner", "type": "address" }
+    ],
+    "name": "OwnableInvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "account", "type": "address" }
+    ],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  { "inputs": [], "name": "VaultAlreadyPinned", "type": "error" },
+  { "inputs": [], "name": "VaultDoesNotExist", "type": "error" },
+  { "inputs": [], "name": "ZeroAddress", "type": "error" },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "schemaCID",
+        "type": "string"
+      }
+    ],
+    "name": "VaultFromProposalCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "permission",
+        "type": "uint8"
+      }
+    ],
+    "name": "VaultFromProposalPinned",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "VaultFromProposalUnpinned",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" },
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "string", "name": "description", "type": "string" },
+      { "internalType": "address", "name": "user", "type": "address" }
+    ],
+    "name": "createVaultFromProposal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" },
+      { "internalType": "address", "name": "user", "type": "address" }
+    ],
+    "name": "pinVaultFromProposal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "name": "proposalIdToVault",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "masterGranter", "type": "address" }
+    ],
+    "name": "setVaultMasterCrosschainGranter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" },
+      { "internalType": "address", "name": "user", "type": "address" }
+    ],
+    "name": "unpinVaultFromProposal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" },
+      { "internalType": "address", "name": "user", "type": "address" }
+    ],
+    "name": "upgradePermissionVaultFromProposal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vaultAccessControl",
+    "outputs": [
+      {
+        "internalType": "contract IVaultAccessControl",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vaultCore",
+    "outputs": [
+      { "internalType": "contract IVault", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vaultMasterCrosschainGranter",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vaultPermissions",
+    "outputs": [
+      {
+        "internalType": "contract IVaultPermissions",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

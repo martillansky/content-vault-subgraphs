@@ -1,0 +1,39 @@
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultFromProposalCreated @entity(immutable: true) {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+  proposalId: Bytes! # bytes32
+  name: String! # string
+  description: String! # string
+  schemaCID: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultFromProposalPinned @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes! # address
+  tokenId: BigInt! # uint256
+  permission: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultFromProposalUnpinned @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes! # address
+  tokenId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

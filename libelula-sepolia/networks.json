@@ -3,6 +3,9 @@
     "Vault": {
       "address": "0x1D3D1A96f4CBD8539Fe3b9f523069721bDCc13cA",
       "startBlock": 8222208
+    },
+    "SchemaManager": {
+      "address": "0x403F08FeB24c2F0796D7Aeddd1162f3057562F20"
     }
   }
 }

@@ -1,0 +1,8 @@
+{
+  "sepolia": {
+    "ProposalVaultManager": {
+      "address": "0x63740c3E21dA5B45e17B124C5562a94C14E1477B",
+      "startBlock": 8222208
+    }
+  }
+}

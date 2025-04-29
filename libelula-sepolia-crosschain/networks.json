@@ -1,0 +1,8 @@
+{
+  "sepolia": {
+    "MasterCrosschainGranter": {
+      "address": "0x5b311525E7f6B56a73b4d6458BdA7B33bd296116",
+      "startBlock": 8222208
+    }
+  }
+}

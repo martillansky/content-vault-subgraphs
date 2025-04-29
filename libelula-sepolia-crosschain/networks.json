@@ -3,6 +3,9 @@
     "MasterCrosschainGranter": {
       "address": "0x5b311525E7f6B56a73b4d6458BdA7B33bd296116",
       "startBlock": 8222208
+    },
+    "MasterGateway": {
+      "address": "0xF0E00c7BDeb3CC677485A871eF6E72b4f8655f4a"
     }
   }
 }

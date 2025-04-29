@@ -1,0 +1,8 @@
+{
+  "gnosis-chiado": {
+    "ForeignCrosschainGranter": {
+      "address": "0xC8993a375fAc9D7e048D1230E271f44C1344413e",
+      "startBlock": 15522059
+    }
+  }
+}

@@ -1,0 +1,32 @@
+specVersion: 1.3.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ForeignCrosschainGranter
+    network: gnosis-chiado
+    source:
+      address: "0xC8993a375fAc9D7e048D1230E271f44C1344413e"
+      abi: ForeignCrosschainGranter
+      startBlock: 15522059
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - OwnershipTransferred
+        - VaultFromProposalPermissionUpgradeRequested
+        - VaultFromProposalRegisteredOnForeignChain
+      abis:
+        - name: ForeignCrosschainGranter
+          file: ./abis/ForeignCrosschainGranter.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: VaultFromProposalPermissionUpgradeRequested(indexed bytes32,indexed address)
+          handler: handleVaultFromProposalPermissionUpgradeRequested
+        - event: VaultFromProposalRegisteredOnForeignChain(indexed bytes32,indexed address)
+          handler: handleVaultFromProposalRegisteredOnForeignChain
+      file: ./src/foreign-crosschain-granter.ts

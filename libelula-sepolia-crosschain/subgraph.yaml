@@ -33,3 +33,26 @@ dataSources:
         - event: VaultFromProposalRegistrationRequested(indexed bytes32,indexed address)
           handler: handleVaultFromProposalRegistrationRequested
       file: ./src/master-crosschain-granter.ts
+  - kind: ethereum
+    name: MasterGateway
+    network: sepolia
+    source:
+      address: "0xF0E00c7BDeb3CC677485A871eF6E72b4f8655f4a"
+      abi: MasterGateway
+      startBlock: 8222208
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - ForeignGatewayRegistered
+        - MasterGatewayOwnershipTransferred
+      abis:
+        - name: MasterGateway
+          file: ./abis/MasterGateway.json
+      eventHandlers:
+        - event: ForeignGatewayRegistered(uint256,address)
+          handler: handleForeignGatewayRegistered
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/master-gateway.ts

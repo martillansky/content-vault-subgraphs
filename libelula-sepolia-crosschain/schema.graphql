@@ -33,3 +33,20 @@ type VaultFromProposalRegistrationRequested @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+type ForeignGatewayRegistered @entity(immutable: true) {
+  id: Bytes!
+  chainId: BigInt! # uint256
+  foreignGateway: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MasterGatewayOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

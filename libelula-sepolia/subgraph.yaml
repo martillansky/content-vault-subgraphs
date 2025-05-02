@@ -8,9 +8,9 @@ dataSources:
     name: Vault
     network: sepolia
     source:
-      address: "0x1D3D1A96f4CBD8539Fe3b9f523069721bDCc13cA"
+      address: "0xA4556112a1847F4B8bfc9D2B55F34A2638f4188E"
       abi: Vault
-      startBlock: 8222208
+      startBlock: 8242737
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -58,9 +58,9 @@ dataSources:
     name: SchemaManager
     network: sepolia
     source:
-      address: "0x403F08FeB24c2F0796D7Aeddd1162f3057562F20"
+      address: "0x1cB1c91C8cF2E12Ea2BeEb5D952FF29123f04Caf"
       abi: SchemaManager
-      startBlock: 8222207
+      startBlock: 8242737
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -77,3 +77,84 @@ dataSources:
         - event: SchemaSet(indexed uint256,string)
           handler: handleSchemaSet
       file: ./src/schema-manager.ts
+  - kind: ethereum
+    name: ProposalVaultManager
+    network: sepolia
+    source:
+      address: "0x16D8fec0c6D2831a0F54BB468191587f6F2cd8Bd"
+      abi: ProposalVaultManager
+      startBlock: 8242737
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - ProposalVaultManagerOwnershipTransferred
+        - VaultFromProposalCreated
+        - VaultFromProposalPinned
+        - VaultFromProposalUnpinned
+      abis:
+        - name: ProposalVaultManager
+          file: ./abis/ProposalVaultManager.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: VaultFromProposalCreated(indexed uint256,indexed bytes32,string,string,string,uint256,address)
+          handler: handleVaultFromProposalCreated
+        - event: VaultFromProposalPinned(indexed address,indexed uint256,uint8)
+          handler: handleVaultFromProposalPinned
+        - event: VaultFromProposalUnpinned(indexed address,indexed uint256)
+          handler: handleVaultFromProposalUnpinned
+      file: ./src/proposal-vault-manager.ts
+  - kind: ethereum
+    name: MasterCrosschainGranter
+    network: sepolia
+    source:
+      address: "0x3ee5516B43d02cAD3aE2859892aB7c8A5648B819"
+      abi: MasterCrosschainGranter
+      startBlock: 8242737
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - MasterCrosschainGranterOwnershipTransferred
+        - VaultFromProposalPermissionUpgraded
+        - VaultFromProposalRegisteredOnHomeChain
+        - VaultFromProposalRegistrationRequested
+      abis:
+        - name: MasterCrosschainGranter
+          file: ./abis/MasterCrosschainGranter.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: VaultFromProposalPermissionUpgraded(indexed bytes32,indexed address)
+          handler: handleVaultFromProposalPermissionUpgraded
+        - event: VaultFromProposalRegisteredOnHomeChain(indexed bytes32,indexed address)
+          handler: handleVaultFromProposalRegisteredOnHomeChain
+        - event: VaultFromProposalRegistrationRequested(indexed bytes32,indexed address)
+          handler: handleVaultFromProposalRegistrationRequested
+      file: ./src/master-crosschain-granter.ts
+  - kind: ethereum
+    name: MasterGateway
+    network: sepolia
+    source:
+      address: "0x46843BAa2cc929088d475eE7F10426B50BAE2E6b"
+      abi: MasterGateway
+      startBlock: 8242737
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - MasterGatewayForeignGatewayRegistered
+        - MasterGatewayOwnershipTransferred
+      abis:
+        - name: MasterGateway
+          file: ./abis/MasterGateway.json
+      eventHandlers:
+        - event: ForeignGatewayRegistered(uint256,address)
+          handler: handleForeignGatewayRegistered
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/master-gateway.ts

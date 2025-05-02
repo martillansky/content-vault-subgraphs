@@ -2,6 +2,8 @@
   "name": "libelula-chiado",
   "license": "UNLICENSED",
   "scripts": {
+    "executable-sync-abi": "chmod +x scripts/sync-abi.sh",
+    "sync-abi": "./scripts/sync-abi.sh",
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ libelula-chiado",
@@ -14,5 +16,7 @@
     "@graphprotocol/graph-cli": "0.97.0",
     "@graphprotocol/graph-ts": "0.37.0"
   },
-  "devDependencies": { "matchstick-as": "0.6.0" }
+  "devDependencies": {
+    "matchstick-as": "0.6.0"
+  }
 }

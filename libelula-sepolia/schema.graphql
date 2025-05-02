@@ -15,7 +15,22 @@ type ContentStoredWithMetadata @entity(immutable: true) {
   encryptedCID: Bytes! # bytes
   isCIDEncrypted: Boolean! # bool
   metadata: String! # string
+  fields: [ContentField!] @derivedFrom(field: "content") # Dynamic metadata fields
   isMetadataSigned: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ContentField @entity(immutable: true) {
+  id: ID! # Unique (contentId + key)
+  content: ContentStoredWithMetadata!
+  key: String!
+  value: String!
+}
+
+type EIP712DomainChanged @entity(immutable: true) {
+  id: Bytes!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -80,6 +95,8 @@ type VaultAccessGranted @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+  accessRegistry: AccessRegistry! @derivedFrom(field: "vaultAccessGranted")
+  userData: UserData!
 }
 
 type VaultAccessRevoked @entity(immutable: true) {
@@ -101,6 +118,8 @@ type VaultCreated @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+  accessRegistries: [AccessRegistry!]! @derivedFrom(field: "vaultCreated")
+  userData: UserData!
 }
 
 type VaultTransferred @entity(immutable: true) {
@@ -112,6 +131,23 @@ type VaultTransferred @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type AccessRegistry @entity(immutable: true) {
+  id: ID!
+  vaultAccessGranted: VaultAccessGranted
+  vaultCreated: VaultCreated
+  vaultsFromProposalPinned: VaultFromProposalPinned
+}
+
+type UserData @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes!
+  vaultAccessesGranted: [VaultAccessGranted!] @derivedFrom(field: "userData")
+  vaultsCreated: [VaultCreated!] @derivedFrom(field: "userData")
+  vaultsFromProposalPinned: [VaultFromProposalPinned!]
+    @derivedFrom(field: "userData")
+}
+
 type SchemaManagerOwnershipTransferred @entity(immutable: true) {
   id: Bytes!
   previousOwner: Bytes! # address
@@ -125,6 +161,110 @@ type SchemaSet @entity(immutable: true) {
   id: Bytes!
   index: BigInt! # uint256
   schemaCID: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultFromProposalOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultFromProposalCreated @entity(immutable: true) {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+  proposalId: Bytes! # bytes32
+  name: String! # string
+  description: String! # string
+  schemaCID: String! # string
+  chainId: BigInt! # uint256
+  tokenContract: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PendingVaultFromProposal @entity(immutable: false) {
+  id: Bytes!
+  vaultFromProposalPinned: VaultFromProposalPinned!
+}
+
+type VaultFromProposalPinned @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes! # address
+  tokenId: BigInt! # uint256
+  vaultFromProposal: VaultFromProposalCreated
+  permission: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  accessRegistries: [AccessRegistry!]!
+    @derivedFrom(field: "vaultsFromProposalPinned")
+  userData: UserData!
+}
+
+type VaultFromProposalUnpinned @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes! # address
+  tokenId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MasterCrosschainGranterOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultFromProposalPermissionUpgraded @entity(immutable: true) {
+  id: Bytes!
+  proposalId: Bytes! # bytes32
+  user: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultFromProposalRegisteredOnHomeChain @entity(immutable: true) {
+  id: Bytes!
+  proposalId: Bytes! # bytes32
+  tokenContract: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultFromProposalRegistrationRequested @entity(immutable: true) {
+  id: Bytes!
+  proposalId: Bytes! # bytes32
+  tokenContract: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+type ForeignGatewayRegistered @entity(immutable: true) {
+  id: Bytes!
+  chainId: BigInt! # uint256
+  foreignGateway: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MasterGatewayOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

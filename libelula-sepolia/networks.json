@@ -1,11 +1,24 @@
 {
   "sepolia": {
     "Vault": {
-      "address": "0x1D3D1A96f4CBD8539Fe3b9f523069721bDCc13cA",
-      "startBlock": 8222208
+      "address": "0xA4556112a1847F4B8bfc9D2B55F34A2638f4188E",
+      "startBlock": 8242737
     },
     "SchemaManager": {
-      "address": "0x403F08FeB24c2F0796D7Aeddd1162f3057562F20"
+      "address": "0x1cB1c91C8cF2E12Ea2BeEb5D952FF29123f04Caf",
+      "startBlock": 8242737
+    },
+    "MasterCrosschainGranter": {
+      "address": "0x3ee5516B43d02cAD3aE2859892aB7c8A5648B819",
+      "startBlock": 8242737
+    },
+    "MasterGateway": {
+      "address": "0x46843BAa2cc929088d475eE7F10426B50BAE2E6b",
+      "startBlock": 8242737
+    },
+    "ProposalVaultManager": {
+      "address": "0x16D8fec0c6D2831a0F54BB468191587f6F2cd8Bd",
+      "startBlock": 8242737
     }
   }
 }

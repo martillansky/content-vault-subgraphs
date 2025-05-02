@@ -8,9 +8,9 @@ dataSources:
     name: ForeignCrosschainGranter
     network: gnosis-chiado
     source:
-      address: "0xC8993a375fAc9D7e048D1230E271f44C1344413e"
+      address: "0xF184708c885d00a8b1C0Ab5288f2ee9f7a9d5531"
       abi: ForeignCrosschainGranter
-      startBlock: 15522059
+      startBlock: 15569729
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -30,3 +30,23 @@ dataSources:
         - event: VaultFromProposalRegisteredOnForeignChain(indexed bytes32,indexed address)
           handler: handleVaultFromProposalRegisteredOnForeignChain
       file: ./src/foreign-crosschain-granter.ts
+  - kind: ethereum
+    name: ForeignGateway
+    network: gnosis-chiado
+    source:
+      address: "0x00f450cB1CAc375E4257E22AD30Faf08d46f0f85"
+      abi: ForeignGateway
+      startBlock: 15569729
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - ForeignGatewayOwnershipTransferred
+      abis:
+        - name: ForeignGateway
+          file: ./abis/ForeignGateway.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/foreign-gateway.ts

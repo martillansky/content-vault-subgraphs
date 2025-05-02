@@ -1,12 +1,93 @@
 [
   {
     "type": "constructor",
-    "inputs": [],
+    "inputs": [
+      {
+        "name": "_amBridgeAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_masterCrosschainGranter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
     "stateMutability": "nonpayable"
   },
   {
     "type": "function",
-    "name": "getLastSchemaIndex",
+    "name": "amBridgeAddress",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "chainIdToGateway",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getGateway",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "indexToChainId",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "lastIndex",
     "inputs": [],
     "outputs": [
       {
@@ -19,51 +100,13 @@
   },
   {
     "type": "function",
-    "name": "getSchema",
-    "inputs": [
-      {
-        "name": "schemaIndex",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getSchemaFromVault",
-    "inputs": [
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "lastSchemaIndex",
+    "name": "masterCrosschainGranter",
     "inputs": [],
     "outputs": [
       {
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "address",
+        "internalType": "address"
       }
     ],
     "stateMutability": "view"
@@ -83,6 +126,37 @@
   },
   {
     "type": "function",
+    "name": "receiveMessage",
+    "inputs": [
+      {
+        "name": "_message",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "registerForeignGateway",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "foreignGateway",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "renounceOwnership",
     "inputs": [],
     "outputs": [],
@@ -90,44 +164,17 @@
   },
   {
     "type": "function",
-    "name": "schemaCIDs",
+    "name": "sendMessageToForeignGateway",
     "inputs": [
       {
-        "name": "",
+        "name": "chainId",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ],
-    "outputs": [
+      },
       {
-        "name": "",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "setLastSchemaIndexToVault",
-    "inputs": [
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setSchema",
-    "inputs": [
-      {
-        "name": "schemaCID",
-        "type": "string",
-        "internalType": "string"
+        "name": "_message",
+        "type": "bytes",
+        "internalType": "bytes"
       }
     ],
     "outputs": [],
@@ -147,23 +194,23 @@
     "stateMutability": "nonpayable"
   },
   {
-    "type": "function",
-    "name": "vaultSchemaIndex",
+    "type": "event",
+    "name": "ForeignGatewayRegistered",
     "inputs": [
       {
-        "name": "",
+        "name": "chainId",
         "type": "uint256",
+        "indexed": false,
         "internalType": "uint256"
-      }
-    ],
-    "outputs": [
+      },
       {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "name": "foreignGateway",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
       }
     ],
-    "stateMutability": "view"
+    "anonymous": false
   },
   {
     "type": "event",
@@ -185,32 +232,18 @@
     "anonymous": false
   },
   {
-    "type": "event",
-    "name": "SchemaSet",
-    "inputs": [
-      {
-        "name": "index",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "schemaCID",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
-      }
-    ],
-    "anonymous": false
-  },
-  {
     "type": "error",
-    "name": "InvalidSchemaCID",
+    "name": "InvalidChainId",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "NoSchema",
+    "name": "InvalidSender",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "MessageCallFailed",
     "inputs": []
   },
   {

@@ -45,6 +45,18 @@ type OwnershipTransferred @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+type MapProposalToVault @entity(immutable: true) {
+  id: Bytes!
+  tokenId: BigInt! # uint256
+}
+
+type Permission @entity(immutable: false) {
+  id: Bytes!
+  user: Bytes! # address
+  tokenId: BigInt! # uint256
+  permission: Int! # uint8
+}
+
 type PermissionUpgraded @entity(immutable: true) {
   id: Bytes!
   user: Bytes! # address
@@ -91,7 +103,7 @@ type VaultAccessGranted @entity(immutable: true) {
   id: Bytes!
   to: Bytes! # address
   tokenId: BigInt! # uint256
-  permission: Int! # uint8
+  permission: Permission!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -199,7 +211,7 @@ type VaultFromProposalPinned @entity(immutable: true) {
   to: Bytes! # address
   tokenId: BigInt! # uint256
   vaultFromProposal: VaultFromProposalCreated
-  permission: Int! # uint8
+  permission: Permission!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

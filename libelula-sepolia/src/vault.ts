@@ -20,6 +20,7 @@ import {
   ContentStoredWithMetadata,
   //EIP712DomainChanged,
   OwnershipTransferred,
+  Permission,
   PermissionUpgraded,
   TransferBatch,
   TransferSingle,
@@ -30,6 +31,7 @@ import {
   VaultCreated,
   VaultTransferred,
 } from "../generated/schema";
+import { getPermissionId } from "../utils/generators";
 
 export function handleApprovalForAll(event: ApprovalForAllEvent): void {
   let entity = new ApprovalForAll(
@@ -153,6 +155,17 @@ export function handlePermissionUpgraded(event: PermissionUpgradedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let permissionId = getPermissionId(event.params.tokenId, event.params.user);
+  let permission = Permission.load(permissionId);
+  if (permission != null) {
+    permission.permission = 2; // Permission.WRITE
+    permission.save();
+  } else {
+    log.warning("Permission not found for tokenId: {}", [
+      permissionId.toHexString(),
+    ]);
+  }
 }
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
@@ -209,7 +222,18 @@ export function handleVaultAccessGranted(event: VaultAccessGrantedEvent): void {
   );
   entity.to = event.params.to;
   entity.tokenId = event.params.tokenId;
-  entity.permission = event.params.permission;
+
+  let permissionId = getPermissionId(event.params.tokenId, event.params.to);
+  let permission = Permission.load(permissionId);
+  if (permission == null) {
+    permission = new Permission(permissionId);
+    permission.user = event.params.to;
+    permission.tokenId = event.params.tokenId;
+    permission.permission = event.params.permission;
+    permission.save();
+  }
+
+  entity.permission = permission.id;
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -254,12 +278,22 @@ export function handleVaultAccessRevoked(event: VaultAccessRevokedEvent): void {
   );
   entity.to = event.params.to;
   entity.tokenId = event.params.tokenId;
-
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let permissionId = getPermissionId(event.params.tokenId, event.params.to);
+  let permission = Permission.load(permissionId);
+  if (permission != null) {
+    permission.permission = 0; // Permission.NONE
+    permission.save();
+  } else {
+    log.warning("Permission not found for tokenId: {}", [
+      permissionId.toHexString(),
+    ]);
+  }
 }
 
 export function handleVaultCreated(event: VaultCreatedEvent): void {

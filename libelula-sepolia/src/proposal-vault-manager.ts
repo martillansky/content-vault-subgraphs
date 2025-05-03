@@ -7,14 +7,17 @@ import {
 } from "../generated/ProposalVaultManager/ProposalVaultManager";
 import {
   AccessRegistry,
+  MapProposalToVault,
   OwnershipTransferred,
   PendingVaultFromProposal,
+  Permission,
   UserData,
   VaultCreated,
   VaultFromProposalCreated,
   VaultFromProposalPinned,
   VaultFromProposalUnpinned,
 } from "../generated/schema";
+import { getPermissionId, getProposalToVaultId } from "../utils/generators";
 
 export function handleOwnershipTransferred(
   event: OwnershipTransferredEvent
@@ -35,8 +38,13 @@ export function handleOwnershipTransferred(
 export function handleVaultFromProposalCreated(
   event: VaultFromProposalCreatedEvent
 ): void {
+  let mapProposalToVault = new MapProposalToVault(
+    getProposalToVaultId(event.params.proposalId)
+  );
+  mapProposalToVault.tokenId = event.params.tokenId;
+  mapProposalToVault.save();
+
   let entity = new VaultFromProposalCreated(
-    //event.transaction.hash.concatI32(event.logIndex.toI32())
     Bytes.fromUTF8(event.params.tokenId.toHexString())
   );
   entity.tokenId = event.params.tokenId;
@@ -83,7 +91,18 @@ export function handleVaultFromProposalPinned(
   );
   entity.to = event.params.to;
   entity.tokenId = event.params.tokenId;
-  entity.permission = event.params.permission;
+
+  let permissionId = getPermissionId(event.params.tokenId, event.params.to);
+  let permission = Permission.load(permissionId);
+  if (permission == null) {
+    permission = new Permission(permissionId);
+    permission.user = event.params.to;
+    permission.tokenId = event.params.tokenId;
+    permission.permission = event.params.permission;
+    permission.save();
+  }
+
+  entity.permission = permission.id;
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -146,4 +165,15 @@ export function handleVaultFromProposalUnpinned(
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let permissionId = getPermissionId(event.params.tokenId, event.params.to);
+  let permission = Permission.load(permissionId);
+  if (permission != null) {
+    permission.permission = 0; // Permission.NONE
+    permission.save();
+  } else {
+    log.warning("Permission not found for tokenId: {}", [
+      permissionId.toHexString(),
+    ]);
+  }
 }
